@@ -33,10 +33,11 @@ import std.bitmanip : swapEndian;
  * Returns:
  *  4 byte hash value.
  */
+@trusted pure nothrow
 uint xxhashOf(in ubyte[] source, uint seed = 0)
 {
-    auto srcPtr = cast(uint*)source.ptr;
-    auto srcEnd = cast(uint*)(source.ptr + source.length);
+    auto srcPtr = cast(const(uint)*)source.ptr;
+    auto srcEnd = cast(const(uint)*)(source.ptr + source.length);
     uint result = void;
 
     if (source.length >= 16) {
@@ -63,8 +64,8 @@ uint xxhashOf(in ubyte[] source, uint seed = 0)
         srcPtr++;
     }
 
-    auto ptr = cast(ubyte*)srcPtr;
-    auto end = cast(ubyte*)srcEnd;
+    auto ptr = cast(const(ubyte)*)srcPtr;
+    auto end = cast(const(ubyte)*)srcEnd;
 
     mixin(FinishRound);
 
@@ -140,7 +141,7 @@ struct XXHash
                 _memory[_memorySize.._memorySize + sliceSize] = data[0..sliceSize];
 
                 auto v1 = _v1, v2 = _v2, v3 = _v3, v4 = _v4;
-                auto srcPtr = cast(uint*)_memory.ptr;
+                auto srcPtr = cast(const(uint)*)_memory.ptr;
 
                 mixin(UpdateValuesRound);
 
@@ -150,15 +151,15 @@ struct XXHash
             }
 
             if (ptr <= end - 16) {
-                auto srcPtr = cast(uint*)ptr;
-                auto limit = cast(uint*)(end - 16);
+                auto srcPtr = cast(const(uint)*)ptr;
+                auto limit = cast(const(uint)*)(end - 16);
                 auto v1 = _v1, v2 = _v2, v3 = _v3, v4 = _v4;
 
                 do {
                     mixin(UpdateValuesRound);
                 } while (srcPtr <= limit);
 
-                ptr = cast(ubyte*)srcPtr;
+                ptr = cast(const(ubyte)*)srcPtr;
                 _v1 = v1; _v2 = v2; _v3 = v3, _v4 = v4;
             }
 
@@ -188,7 +189,7 @@ struct XXHash
             result += cast(uint)_totalLength;
 
             while (ptr <= end - 4) {
-                result += loadUint(cast(uint*)ptr) * Prime32_3;
+                result += loadUint(cast(const(uint)*)ptr) * Prime32_3;
                 result = rotateLeft(result, 17) * Prime32_4;
                 ptr += 4;
             }
