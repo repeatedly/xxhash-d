@@ -1,0 +1,9 @@
+{
+    "name":        "xxhash",
+    "description": "D implementation of xxhash.",
+    "authors":     ["Masahiro Nakagawa"],
+    "homepage":    "https://github.com/repeatedly/xxhash-d",
+    "license":     "Boost Software License, Version 1.0",
+    "importPaths": ["src"],
+    "targetType":  "library"
+}
