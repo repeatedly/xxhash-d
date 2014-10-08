@@ -3,7 +3,7 @@ MODEL ?= $(shell getconf LONG_BIT)
 DMD ?= dmd
 
 LIB    = libxxhash.a
-DFLAGS = -Isrc -m$(MODEL) -w -d -property
+DFLAGS = -Isrc -m$(MODEL) -w -d
 
 ifeq ($(BUILD),debug)
 	DFLAGS += -g -debug
