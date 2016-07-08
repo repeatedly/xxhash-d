@@ -34,7 +34,8 @@ import std.bitmanip : swapEndian;
  *  4 byte hash value.
  */
 @trusted pure nothrow
-uint xxhashOf(in ubyte[] source, uint seed = 0)
+uint xxhashOf(T)(const(T)[] source, uint seed = 0)
+if (is(T == ubyte) || is(T == byte) || is(T == char))
 {
     auto srcPtr = cast(const(uint)*)source.ptr;
     auto srcEnd = cast(const(uint)*)(source.ptr + source.length);
@@ -123,9 +124,10 @@ struct XXHash
          * Also implements the $(XREF range, OutputRange) interface for $(D ubyte) and $(D const(ubyte)[]).
          */
         @trusted
-        void put(scope const(ubyte)[] data...)
+        void put(T)(scope const(T)[] data...)
+        if (is(T == ubyte) || is(T == byte) || is(T == char))
         {
-            auto ptr = data.ptr;
+            auto ptr = cast(const(ubyte)*) data.ptr;
             auto end = ptr + data.length;
 
             _totalLength += data.length;
@@ -168,6 +170,13 @@ struct XXHash
                 _memory[0..remain] = ptr[0..remain];
                 _memorySize = remain;
             }
+        }
+
+        // Backward compatibility overload that allows to put int literals.
+        version(D_Ddoc){} else
+        void put(scope const(ubyte)[] data...)
+        {
+            put!ubyte(data);
         }
 
         /**
