@@ -49,7 +49,7 @@ SipHash:   866
 
 # Link
 
-* [xxhash - Extremely fast non-cryptographic hash algorithm](https://code.google.com/p/xxhash/)
+* [xxhash - Extremely fast non-cryptographic hash algorithm](https://github.com/Cyan4973/xxHash)
 
   official site
 
