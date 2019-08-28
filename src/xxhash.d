@@ -23,7 +23,7 @@ $(TR $(TDNW Helpers) $(TD $(MYREF xxhashOf)))
  * License:   <a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
  * Authors:   Masahiro Nakagawa
  */
-module xxhash;
+module xxhash; @nogc:
 
 import std.bitmanip : swapEndian;
 
@@ -95,7 +95,7 @@ struct XXHash
     ulong _totalLength;
 
   public:
-    @safe pure nothrow
+    @safe pure nothrow @nogc
     {
         /**
          * Constructs XXHash with seed.
@@ -255,7 +255,7 @@ unittest
 {
     import std.range : chunks;
 
-    void runTests(ubyte[] sentence, uint seed, uint expected)
+    void runTests(ubyte[] sentence, uint seed, uint expected) @nogc
     {
         assert(xxhashOf(sentence, seed) == expected, "xxhashOf failed");
 
