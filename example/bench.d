@@ -1,6 +1,6 @@
 
 import std.stdio;
-import std.datetime;
+import std.datetime.stopwatch;
 import std.typetuple;
 
 import xxhash;
@@ -91,14 +91,14 @@ void main()
     immutable num = 1000000;
     auto times = benchmark!(Funcs)(num);
     writeln(num, " loops (msecs) : smaller is better");
-    writeln("crc32Of:   ", times[0].msecs);
-    writeln("md5Of:     ", times[1].msecs);
-    writeln("sha1Of:    ", times[2].msecs);
-    writeln("xxhashOf:  ", times[3].msecs);
-    writeln("XXHash:    ", times[4].msecs);
+    writeln("crc32Of:   ", times[0]);
+    writeln("md5Of:     ", times[1]);
+    writeln("sha1Of:    ", times[2]);
+    writeln("xxhashOf:  ", times[3]);
+    writeln("XXHash:    ", times[4]);
     version(USE_SIPHASH)
     {
-        writeln("siphashOf: ", times[5].msecs);
-        writeln("SipHash:   ", times[6].msecs);
+        writeln("siphashOf: ", times[5]);
+        writeln("SipHash:   ", times[6]);
     }
 }
