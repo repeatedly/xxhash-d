@@ -27,13 +27,19 @@ module xxhash;
 
 import std.bitmanip : swapEndian;
 
+static if (__VERSION__ < 2066)
+{
+    enum nogc : int; // @nogc was added in 2.066. Before that fake it with a UDA.
+    static assert(__VERSION__ >= 2061, "Minimum DMD version required is 2.061.");
+}
+
 /**
  * Computes xxhash hashes of arbitrary data.
  *
  * Returns:
  *  4 byte hash value.
  */
-@trusted pure nothrow
+@nogc @trusted pure nothrow
 uint xxhashOf(in ubyte[] source, uint seed = 0)
 {
     auto srcPtr = cast(const(uint)*)source.ptr;
@@ -95,7 +101,7 @@ struct XXHash
     ulong _totalLength;
 
   public:
-    @safe pure nothrow
+    @nogc @safe pure nothrow
     {
         /**
          * Constructs XXHash with seed.
@@ -236,13 +242,13 @@ enum Prime32_3 = 3266489917U;
 enum Prime32_4 = 668265263U;
 enum Prime32_5 = 374761393U;
 
-@safe pure nothrow
+@nogc @safe pure nothrow
 uint rotateLeft(in uint x, in uint n)
 {
     return (x << n) | (x >> (32 - n));
 }
 
-@safe pure nothrow
+@nogc @safe pure nothrow
 uint loadUint(in uint* source)
 {
     version (LittleEndian)
